@@ -8,7 +8,7 @@ import databaseConfig from '../../config/database.config';
 export class PrismaService extends PrismaClient {
   constructor(
     @Inject(databaseConfig.KEY)
-    private dbConfig: ConfigType<typeof databaseConfig>
+    private dbConfig: ConfigType<typeof databaseConfig>,
   ) {
     super({
       datasources: {

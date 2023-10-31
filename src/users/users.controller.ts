@@ -14,10 +14,15 @@ import {
   Query,
   Req,
   UnauthorizedException,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { Roles } from '../common/decorators';
 import { PageDto } from '../common/dto';
@@ -37,7 +42,10 @@ export class UsersController {
   @ApiOperation({ summary: 'Get users with pagination' })
   @ApiOkResponse({ status: 200, type: PaginatedUsersDto })
   @Get()
-  async getUsers(@Req() req: Request, @Query() pageDto: PageDto): Promise<PaginatedUsersDto> {
+  async getUsers(
+    @Req() req: Request,
+    @Query() pageDto: PageDto,
+  ): Promise<PaginatedUsersDto> {
     const endpoint = getEndpoint(req);
 
     const response = await this.userService.getUsers(pageDto, endpoint);
@@ -54,7 +62,9 @@ export class UsersController {
   @ApiOkResponse({ status: 200, type: ReturnedUserDto })
   @ApiException(() => NotFoundException, { description: 'User not found' })
   @Get(':id')
-  async getUser(@Param('id', ParseIntPipe) id: User['id']): Promise<ReturnedUserDto> {
+  async getUser(
+    @Param('id', ParseIntPipe) id: User['id'],
+  ): Promise<ReturnedUserDto> {
     const user = await this.userService.getUser(id);
 
     return new ReturnedUserDto(user);
@@ -63,12 +73,14 @@ export class UsersController {
   @ApiOperation({ summary: 'Update user roles, only for authorized ADMINS' })
   @ApiParam({ name: 'id', type: String, description: 'User id' })
   @ApiOkResponse({ status: 200, type: ReturnedUserDto })
-  @ApiException(() => NotFoundException, { description: 'User or role not found' })
+  @ApiException(() => NotFoundException, {
+    description: 'User or role not found',
+  })
   @Roles(MainRoles.admin)
   @Patch(':id/role')
   async toggleUserRole(
     @Param('id', ParseIntPipe) id: User['id'],
-    @Body() roleDto: ToggleRoleDto
+    @Body() roleDto: ToggleRoleDto,
   ): Promise<ReturnedUserDto> {
     const updatedUser = await this.userService.toggleUserRole(id, roleDto.role);
 

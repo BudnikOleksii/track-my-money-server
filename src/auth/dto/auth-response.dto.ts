@@ -3,10 +3,16 @@ import { ApiProperty } from '@nestjs/swagger';
 import { ReturnedUserDto } from '../../users/dto';
 
 export class AuthResponseDto {
-  @ApiProperty({ example: 'refresh.token', description: 'Generated refresh token' })
+  @ApiProperty({
+    example: 'refresh.token',
+    description: 'Generated refresh token',
+  })
   refreshToken: string;
 
-  @ApiProperty({ example: 'access.token', description: 'Generated access token' })
+  @ApiProperty({
+    example: 'access.token',
+    description: 'Generated access token',
+  })
   accessToken: string;
 
   @ApiProperty({

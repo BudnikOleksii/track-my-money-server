@@ -1,7 +1,9 @@
+import type { NullableType } from './util-types';
+
 export interface IInfoData {
   total: number;
-  next: string;
-  prev: string;
+  next: NullableType<string>;
+  prev: NullableType<string>;
   pages: number;
 }
 

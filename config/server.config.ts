@@ -1,5 +1,5 @@
-import { registerAs } from '@nestjs/config';
 import * as process from 'process';
+import { registerAs } from '@nestjs/config';
 
 export interface ServerConfig {
   port: number;
@@ -21,16 +21,16 @@ const apiUrl = 'http://localhost:8080' + apiEntrypoint;
 export default registerAs(
   'server',
   (): ServerConfig => ({
-    port: parseInt(process.env.SERVER_PORT, 10) || 8080,
+    port: parseInt(process.env.SERVER_PORT ?? '8080', 10),
     apiEntrypoint,
     adminRole: 'ADMIN',
     userRole: 'USER',
     saltRounds: 7,
-    accessSecret: process.env.JWT_ACCESS_SECRET,
-    refreshSecret: process.env.JWT_REFRESH_SECRET,
+    accessSecret: process.env.JWT_ACCESS_SECRET ?? '',
+    refreshSecret: process.env.JWT_REFRESH_SECRET ?? '',
     accessExpiresIn: '10m',
     refreshExpiresIn: '7d',
     apiUrl,
     clientUrl: 'http://localhost:3000',
-  })
+  }),
 );

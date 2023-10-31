@@ -4,8 +4,8 @@ export interface ITokenPayload {
   sub: number;
   email: string;
   roles: string[];
-  iat?: any;
-  exp?: any;
+  iat?: number;
+  exp?: number;
 }
 
 export interface ITokenWithId extends ITokenPayload {
