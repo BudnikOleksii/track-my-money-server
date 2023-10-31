@@ -4,7 +4,7 @@ export const createInfoData = (
   total: number,
   page: number,
   limit: number,
-  endpoint: string
+  endpoint: string,
 ): IInfoData => {
   const pages = Math.ceil(total / limit);
 

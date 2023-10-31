@@ -3,6 +3,8 @@ import type { User } from '@prisma/client';
 import { Exclude } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
+import { NullableType } from '../../common/types';
+
 export class ReturnedUserDto implements User {
   @ApiProperty({ example: 3, description: 'Uniq user id' })
   id: number;
@@ -15,24 +17,31 @@ export class ReturnedUserDto implements User {
 
   @ApiProperty({
     example: 24,
-    description: 'Rating depends on how much user have cards and bonuses from sets',
+    description:
+      'Rating depends on how much user have cards and bonuses from sets',
   })
   rating: number;
 
   @ApiProperty({ example: '::ffff:127.0.0.1', description: 'User ip address' })
   ip: string;
 
-  @ApiProperty({ example: '2023-07-19 12:39:18.952', description: 'Creation date' })
+  @ApiProperty({
+    example: '2023-07-19 12:39:18.952',
+    description: 'Creation date',
+  })
   createdAt: Date;
 
-  @ApiProperty({ example: '2023-07-19 12:39:18.952', description: 'Last visit date' })
+  @ApiProperty({
+    example: '2023-07-19 12:39:18.952',
+    description: 'Last visit date',
+  })
   updatedAt: Date;
 
   @Exclude()
   activated: boolean;
 
   @Exclude()
-  deletedAt: Date;
+  deletedAt: NullableType<Date>;
 
   @Exclude()
   password: string;

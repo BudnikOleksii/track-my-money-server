@@ -75,7 +75,9 @@ export class UsersRepository {
       },
     });
 
-    return existingRole ? this.removeUserRole(userId, roleId) : this.addUserRole(userId, roleId);
+    return existingRole
+      ? this.removeUserRole(userId, roleId)
+      : this.addUserRole(userId, roleId);
   }
 
   removeUserRole(userId: User['id'], roleId: Role['id']) {

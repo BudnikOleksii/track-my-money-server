@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { type Prisma, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -23,14 +23,14 @@ export const seedUsersRoles = async () => {
     const roleIdsMap = new Map(roles.map((role) => [role.value, role.id]));
     const userIdsMap = new Map(users.map((user) => [user.username, user.id]));
 
-    const userRolesData = [
+    const userRolesData: Prisma.UserRoleCreateManyInput[] = [
       {
-        userId: userIdsMap.get(users[0].username),
-        roleId: roleIdsMap.get(ADMIN),
+        userId: userIdsMap.get(users[0].username)!,
+        roleId: roleIdsMap.get(ADMIN)!,
       },
       {
-        userId: userIdsMap.get(users[1].username),
-        roleId: roleIdsMap.get(USER),
+        userId: userIdsMap.get(users[1].username)!,
+        roleId: roleIdsMap.get(USER)!,
       },
     ];
 

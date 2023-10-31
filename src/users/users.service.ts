@@ -4,7 +4,12 @@ import type { CreateUserDto } from './dto';
 import type { Role, User } from '@prisma/client';
 
 import * as bcrypt from 'bcrypt';
-import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 
 import serverConfig from '../../config/server.config';
@@ -19,10 +24,13 @@ export class UsersService {
     @Inject(serverConfig.KEY)
     private config: ConfigType<typeof serverConfig>,
     private userRepository: UsersRepository,
-    private rolesService: RolesService
+    private rolesService: RolesService,
   ) {}
 
-  async getUsers(pageDto: PageDto, endpoint: string): Promise<IPaginatedResult<User>> {
+  async getUsers(
+    pageDto: PageDto,
+    endpoint: string,
+  ): Promise<IPaginatedResult<User>> {
     const { page = DEFAULT_PAGE, limit = DEFAULT_LIMIT } = pageDto;
     const { users, total } = await this.userRepository.getUsers(page, limit);
 
@@ -55,7 +63,10 @@ export class UsersService {
       throw new BadRequestException('Current username already in use');
     }
 
-    const hashPassword = await bcrypt.hash(dto.password, this.config.saltRounds);
+    const hashPassword = await bcrypt.hash(
+      dto.password,
+      this.config.saltRounds,
+    );
     const role = await this.rolesService.getRoleByValue(this.config.userRole);
     const payload = {
       ...dto,
@@ -71,6 +82,8 @@ export class UsersService {
   async activateUser(id: User['id']) {
     const user = await this.userRepository.updateUser(id, { activated: true });
 
+    // TODO investigate why user every time not null/added endpoint for activation
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!user) {
       throw new NotFoundException('User not found');
     }
