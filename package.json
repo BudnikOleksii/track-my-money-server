@@ -91,6 +91,6 @@
     }
   },
   "lint-staged": {
-    "**/*.{ts,tsx}": ["yarn lint", "git add"]
+    "**/*.{ts,tsx}": ["eslint \"{src,apps,libs,test}/**/*.ts\" --fix"]
   }
 }
