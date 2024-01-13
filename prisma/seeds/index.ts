@@ -4,6 +4,7 @@ import { seedCategories } from './categories';
 import { seedCurrencies } from './currency';
 import { seedRoles } from './roles';
 import { seedUsers } from './users';
+import { seedUserCategories } from './users-categories';
 import { seedUsersRoles } from './users-roles';
 
 const prisma = new PrismaClient();
@@ -15,6 +16,7 @@ const main = async () => {
     await seedUsers();
     await seedUsersRoles();
     await seedCategories();
+    await seedUserCategories();
 
     console.log('All tables seeding completed.');
   } catch (error) {
