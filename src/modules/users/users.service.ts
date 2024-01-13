@@ -1,7 +1,6 @@
 import type { PageDto } from '../../common/dto';
 import type { IPaginatedResult } from '../../common/types';
 import type { CreateUserDto } from './dto';
-import type { Role, User } from '@prisma/client';
 
 import * as bcrypt from 'bcrypt';
 import {
@@ -11,6 +10,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
+import { type Prisma, type Role, type User } from '@prisma/client';
 
 import { DEFAULT_LIMIT, DEFAULT_PAGE } from '../../common/constatns';
 import { createInfoData } from '../../common/helpers';
@@ -62,15 +62,19 @@ export class UsersService {
       this.config.saltRounds,
     );
     const role = await this.rolesService.getRoleByValue(this.config.userRole);
-    const payload = {
+    const payload: Prisma.UserCreateInput = {
       ...dto,
       password: hashPassword,
       roles: {
         create: [{ roleId: role.id }],
       },
+      BaseCurrency: {
+        connect: {
+          id: dto.baseCurrency, // TODO make sure that it's valid currency
+        },
+      },
     };
 
-    // @ts-ignore TODO Add currency!
     return this.userRepository.createUser(payload);
   }
 
