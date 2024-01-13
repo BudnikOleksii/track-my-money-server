@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
+import { seedCurrencies } from './currency';
 import { seedRoles } from './roles';
 import { seedUsers } from './users';
 import { seedUsersRoles } from './users-roles';
@@ -9,6 +10,7 @@ const prisma = new PrismaClient();
 const main = async () => {
   try {
     await seedRoles();
+    await seedCurrencies();
     await seedUsers();
     await seedUsersRoles();
 

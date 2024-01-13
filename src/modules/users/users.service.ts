@@ -51,16 +51,10 @@ export class UsersService {
   }
 
   async createUser(dto: CreateUserDto) {
-    let candidate = await this.getUserByEmail(dto.email);
+    const candidate = await this.getUserByEmail(dto.email);
 
     if (candidate) {
       throw new BadRequestException('Email already in use');
-    }
-
-    candidate = await this.getUserByUsername(dto.username);
-
-    if (candidate) {
-      throw new BadRequestException('Current username already in use');
     }
 
     const hashPassword = await bcrypt.hash(
@@ -76,6 +70,7 @@ export class UsersService {
       },
     };
 
+    // @ts-ignore TODO Add currency!
     return this.userRepository.createUser(payload);
   }
 
@@ -105,9 +100,5 @@ export class UsersService {
 
   getUserByEmail(email: User['email']) {
     return this.userRepository.getUserByEmail(email);
-  }
-
-  getUserByUsername(username: User['username']) {
-    return this.userRepository.getUserByUsername(username);
   }
 }
