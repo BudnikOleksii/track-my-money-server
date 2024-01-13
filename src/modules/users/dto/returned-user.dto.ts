@@ -9,11 +9,17 @@ export class ReturnedUserDto implements User {
   @ApiProperty({ example: 3, description: 'Uniq user id' })
   id: number;
 
-  @ApiProperty({ example: 'Admin Admin', description: 'Username' })
-  username: string;
-
   @ApiProperty({ example: 'user@gmail.com', description: 'Valid email' })
   email: string;
+
+  @ApiProperty({ example: 'John', description: 'First name' })
+  firstName: string;
+
+  @ApiProperty({ example: 'Doe', description: 'Last name' })
+  lastName: string;
+
+  @ApiProperty({ example: '3', description: 'Currency' })
+  baseCurrency: number;
 
   @ApiProperty({
     example: 24,

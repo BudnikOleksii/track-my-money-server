@@ -12,49 +12,136 @@ datasource db {
 
 // Models
 model Role {
-  id          Int        @id @default(autoincrement())
-  value       String     @unique
+  id          Int          @id @default(autoincrement())
+  value       String       @unique
   description String
-  users       UserRole[]
+  users       UsersRoles[]
+
+  @@map("roles")
+}
+
+model UsersRoles {
+  userId Int
+  roleId Int
+  user   User @relation(fields: [userId], references: [id])
+  role   Role @relation(fields: [roleId], references: [id])
+
+  @@id([userId, roleId])
+}
+
+model User {
+  id                 Int                  @id @default(autoincrement())
+  email              String               @unique
+  password           String
+  ip                 String
+  activated          Boolean              @default(false)
+  baseCurrency       Int
+  firstName          String
+  lastName           String
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  deletedAt          DateTime?
+  transactions       Transaction[]
+  activationLinks    ActivationLink?
+  tokens             Token[]
+  roles              UsersRoles[]
+  UsersCategories    UsersCategories[]
+  UsersSubcategories UsersSubcategories[]
+  Category           Category[]
+  BaseCurrency       Currency             @relation(fields: [baseCurrency], references: [id])
 }
 
 model ActivationLink {
   id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int
+  userId    Int      @unique
   expiresAt DateTime
-}
-
-model User {
-  id             Int              @id @default(autoincrement())
-  username       String           @unique
-  email          String           @unique
-  password       String
-  ip             String
-  activated      Boolean          @default(false)
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  deletedAt      DateTime?
-  roles          UserRole[]
-  Token          Token[]
-  ActivationLink ActivationLink[]
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Token {
   id           String   @id @default(uuid())
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       Int
   refreshToken String
   expiresAt    DateTime
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model UserRole {
-  user   User @relation(fields: [userId], references: [id])
-  userId Int
-  role   Role @relation(fields: [roleId], references: [id])
-  roleId Int
+model Category {
+  id              Int               @id @default(autoincrement())
+  title           String            @unique
+  type            TransactionType
+  createdBy       Int
+  createdby       User              @relation(fields: [createdBy], references: [id])
+  usersCategories UsersCategories[]
+  SubCategory     SubCategory[]
+  Transaction     Transaction[]
+}
 
-  @@id([userId, roleId])
+model SubCategory {
+  id                 Int                  @id @default(autoincrement())
+  title              String               @unique
+  categoryId         Int
+  category           Category             @relation(fields: [categoryId], references: [id])
+  usersSubcategories UsersSubcategories[]
+  Transaction        Transaction[]
+}
+
+model UsersCategories {
+  userId     Int
+  categoryId Int
+  user       User     @relation(fields: [userId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@id([userId, categoryId])
+}
+
+model UsersSubcategories {
+  userId        Int
+  subcategoryId Int
+  user          User        @relation(fields: [userId], references: [id])
+  subcategory   SubCategory @relation(fields: [subcategoryId], references: [id])
+
+  @@id([userId, subcategoryId])
+}
+
+model Transaction {
+  id                 Int         @id @default(autoincrement())
+  amount             Float
+  baseCurrencyAmount Float
+  userId             Int
+  categoryId         Int
+  subcategoryId      Int
+  note               String?
+  date               DateTime
+  currencyId         Int
+  user               User        @relation(fields: [userId], references: [id])
+  category           Category    @relation(fields: [categoryId], references: [id])
+  subcategory        SubCategory @relation(fields: [subcategoryId], references: [id])
+  currency           Currency    @relation(fields: [currencyId], references: [id])
+}
+
+model Currency {
+  id                Int            @id @default(autoincrement())
+  currency          String         @unique
+  transactions      Transaction[]
+  exchangeRatesFrom ExchangeRate[] @relation("ExchangeRateFromCurrency")
+  exchangeRatesTo   ExchangeRate[] @relation("ExchangeRateToCurrency")
+  User              User[]
+}
+
+model ExchangeRate {
+  id           Int      @id @default(autoincrement())
+  base         Int
+  to           Int
+  rate         Float
+  fromCurrency Currency @relation("ExchangeRateFromCurrency", fields: [base], references: [id])
+  toCurrency   Currency @relation("ExchangeRateToCurrency", fields: [to], references: [id])
+}
+
+// Enums
+enum TransactionType {
+  Income
+  Expenses
 }

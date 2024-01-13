@@ -28,7 +28,10 @@ export class UsersRepository {
 
     const [users, total] = await this.prisma.$transaction([
       this.prisma.user.findMany({
-        include: includeRolesQuery,
+        include: {
+          ...includeRolesQuery,
+          BaseCurrency: true,
+        },
         skip: offset,
         take: limit,
       }),
@@ -52,13 +55,6 @@ export class UsersRepository {
     });
   }
 
-  getUserByUsername(username: User['username']) {
-    return this.prisma.user.findUnique({
-      where: { username },
-      include: includeRolesQuery,
-    });
-  }
-
   updateUser(id: User['id'], payload: Prisma.UserUpdateInput) {
     return this.prisma.user.update({
       where: { id },
@@ -68,7 +64,7 @@ export class UsersRepository {
   }
 
   async toggleUserRole(userId: User['id'], roleId: Role['id']) {
-    const existingRole = await this.prisma.userRole.findFirst({
+    const existingRole = await this.prisma.usersRoles.findFirst({
       where: {
         userId,
         roleId,
@@ -81,7 +77,7 @@ export class UsersRepository {
   }
 
   removeUserRole(userId: User['id'], roleId: Role['id']) {
-    return this.prisma.userRole.delete({
+    return this.prisma.usersRoles.delete({
       where: {
         userId_roleId: {
           userId,
@@ -92,7 +88,7 @@ export class UsersRepository {
   }
 
   addUserRole(userId: User['id'], roleId: Role['id']) {
-    return this.prisma.userRole.create({
+    return this.prisma.usersRoles.create({
       data: {
         user: {
           connect: { id: userId },

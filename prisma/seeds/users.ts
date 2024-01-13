@@ -10,18 +10,27 @@ const SALT_ROUNDS = 7;
 export const seedUsers = async () => {
   try {
     await prisma.user.deleteMany();
-    const users: Prisma.UserCreateInput[] = [
+
+    const currencies = await prisma.currency.findMany({
+      select: { id: true, currency: true },
+    });
+
+    const users: Prisma.UserCreateManyInput[] = [
       {
-        username: 'Main admin',
         email: 'admin@gmail.com',
         password: await bcrypt.hash(LOCAL_ADMIN_PASSWORD, SALT_ROUNDS),
+        firstName: 'Main',
+        lastName: 'admin',
+        baseCurrency: currencies[0].id,
         ip: '0.0.0.0',
         activated: true,
       },
       {
-        username: 'Test user',
         email: 'user@gmail.com',
         password: await bcrypt.hash(LOCAL_USER_PASSWORD, SALT_ROUNDS),
+        firstName: 'Regular',
+        lastName: 'User',
+        baseCurrency: currencies[0].id,
         ip: '0.0.0.0',
         activated: true,
       },
