@@ -3,7 +3,7 @@ import type { User } from '@prisma/client';
 import { Exclude } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
-import { NullableType } from '../../common/types';
+import { NullableType } from '../../../common/types';
 
 export class ReturnedUserDto implements User {
   @ApiProperty({ example: 3, description: 'Uniq user id' })

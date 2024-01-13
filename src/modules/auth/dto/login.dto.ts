@@ -2,7 +2,7 @@ import { Transform } from 'class-transformer';
 import { IsEmail, IsString, Length } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-import { lowerCaseTransformer } from '../../common/transformers';
+import { lowerCaseTransformer } from '../../../common/transformers';
 
 export class LoginDto {
   @ApiProperty({ example: 'user@gmail.com', description: 'Valid email' })
