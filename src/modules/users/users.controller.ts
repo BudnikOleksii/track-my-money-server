@@ -24,10 +24,10 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { Roles } from '../common/decorators';
-import { PageDto } from '../common/dto';
-import { getEndpoint } from '../common/helpers';
-import { MainRoles } from '../common/types';
+import { Roles } from '../../common/decorators';
+import { PageDto } from '../../common/dto';
+import { getEndpoint } from '../../common/helpers';
+import { MainRoles } from '../../common/types';
 import { PaginatedUsersDto, ReturnedUserDto, ToggleRoleDto } from './dto';
 import { UsersService } from './users.service';
 

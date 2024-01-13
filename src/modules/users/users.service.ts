@@ -1,5 +1,5 @@
-import type { PageDto } from '../common/dto';
-import type { IPaginatedResult } from '../common/types';
+import type { PageDto } from '../../common/dto';
+import type { IPaginatedResult } from '../../common/types';
 import type { CreateUserDto } from './dto';
 import type { Role, User } from '@prisma/client';
 
@@ -12,9 +12,9 @@ import {
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from '../../common/constatns';
+import { createInfoData } from '../../common/helpers';
 import serverConfig from '../../config/server.config';
-import { DEFAULT_LIMIT, DEFAULT_PAGE } from '../common/constatns';
-import { createInfoData } from '../common/helpers';
 import { RolesService } from '../roles/roles.service';
 import { UsersRepository } from './users.repository';
 
