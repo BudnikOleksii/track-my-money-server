@@ -40,8 +40,8 @@ export const seedUserCategories = async () => {
       skipDuplicates: true,
     });
 
-    console.log('Roles seeding completed.');
+    console.log('User categories and subcategories seeding completed.');
   } catch (error) {
-    console.error('Error seeding roles:', error);
+    console.error('Error seeding user categories and subcategories:', error);
   }
 };

@@ -49,6 +49,7 @@ model User {
   UsersSubcategories UsersSubcategories[]
   Category           Category[]
   BaseCurrency       Currency             @relation(fields: [baseCurrency], references: [id])
+  SubCategory        SubCategory[]
 }
 
 model ActivationLink {
@@ -83,7 +84,9 @@ model SubCategory {
   id                 Int                  @id @default(autoincrement())
   title              String               @unique
   categoryId         Int
+  createdBy          Int?
   category           Category             @relation(fields: [categoryId], references: [id])
+  createdby          User?                @relation(fields: [createdBy], references: [id])
   usersSubcategories UsersSubcategories[]
   Transaction        Transaction[]
 }
@@ -107,19 +110,19 @@ model UsersSubcategories {
 }
 
 model Transaction {
-  id                 Int         @id @default(autoincrement())
+  id                 Int          @id @default(autoincrement())
   amount             Float
   baseCurrencyAmount Float
   userId             Int
   categoryId         Int
-  subcategoryId      Int
+  subcategoryId      Int?
   note               String?
   date               DateTime
   currencyId         Int
-  user               User        @relation(fields: [userId], references: [id])
-  category           Category    @relation(fields: [categoryId], references: [id])
-  subcategory        SubCategory @relation(fields: [subcategoryId], references: [id])
-  currency           Currency    @relation(fields: [currencyId], references: [id])
+  user               User         @relation(fields: [userId], references: [id])
+  category           Category     @relation(fields: [categoryId], references: [id])
+  subcategory        SubCategory? @relation(fields: [subcategoryId], references: [id])
+  currency           Currency     @relation(fields: [currencyId], references: [id])
 }
 
 model Currency {

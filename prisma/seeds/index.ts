@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import { seedCategories } from './categories';
 import { seedCurrencies } from './currency';
 import { seedRoles } from './roles';
+import { seedTransactions } from './transactions';
 import { seedUsers } from './users';
 import { seedUserCategories } from './users-categories';
 import { seedUsersRoles } from './users-roles';
@@ -17,6 +18,7 @@ const main = async () => {
     await seedUsersRoles();
     await seedCategories();
     await seedUserCategories();
+    await seedTransactions();
 
     console.log('All tables seeding completed.');
   } catch (error) {
