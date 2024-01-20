@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import databaseConfig from '../config/database.config';
 import serverConfig from '../config/server.config';
+import { CurrenciesModule } from './currencies/currencies.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
 
@@ -14,6 +15,7 @@ import { UsersModule } from './users/users.module';
     }),
     PrismaModule,
     UsersModule,
+    CurrenciesModule,
   ],
   controllers: [],
   providers: [],

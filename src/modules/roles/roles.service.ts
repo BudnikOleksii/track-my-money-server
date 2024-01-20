@@ -1,6 +1,6 @@
 import type { Role } from '@prisma/client';
 
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { RolesRepository } from './roles.repository';
 
@@ -12,7 +12,7 @@ export class RolesService {
     const role = await this.rolesRepository.getRoleByValue(value);
 
     if (!role) {
-      throw new BadRequestException('Role not found');
+      throw new NotFoundException('Role not found');
     }
 
     return role;

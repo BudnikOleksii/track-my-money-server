@@ -1,1 +1,1 @@
-export * from './lowercase.transformer';
+export * from './case.transformers';
