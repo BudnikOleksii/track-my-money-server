@@ -15,6 +15,7 @@ import { type Prisma, type Role, type User } from '@prisma/client';
 import { DEFAULT_LIMIT, DEFAULT_PAGE } from '../../common/constatns';
 import { createInfoData } from '../../common/helpers';
 import serverConfig from '../../config/server.config';
+import { CurrenciesService } from '../currencies/currencies.service';
 import { RolesService } from '../roles/roles.service';
 import { UsersRepository } from './users.repository';
 
@@ -25,6 +26,7 @@ export class UsersService {
     private config: ConfigType<typeof serverConfig>,
     private userRepository: UsersRepository,
     private rolesService: RolesService,
+    private currenciesService: CurrenciesService,
   ) {}
 
   async getUsers(
@@ -62,6 +64,7 @@ export class UsersService {
       this.config.saltRounds,
     );
     const role = await this.rolesService.getRoleByValue(this.config.userRole);
+    const currency = await this.currenciesService.getById(dto.baseCurrency);
     const payload: Prisma.UserCreateInput = {
       ...dto,
       password: hashPassword,
@@ -70,7 +73,7 @@ export class UsersService {
       },
       BaseCurrency: {
         connect: {
-          id: dto.baseCurrency, // TODO make sure that it's valid currency
+          id: currency.id,
         },
       },
     };
