@@ -3,12 +3,12 @@ import { IsString, Length } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { type Currency } from '@prisma/client';
 
-import { upperCaseTransformers } from '../../common/transformers';
+import { upperCaseTransformer } from '../../common/transformers';
 
 export class CreateCurrencyDto {
   @ApiProperty({ example: 'UAH', description: 'Currency abbreviation' })
   @IsString()
-  @Transform(upperCaseTransformers)
+  @Transform(upperCaseTransformer)
   @Length(3, 3, { message: 'currency should be at 3 characters code' })
   currency: string;
 }
