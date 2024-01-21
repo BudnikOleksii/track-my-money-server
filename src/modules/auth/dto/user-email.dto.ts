@@ -4,6 +4,8 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { lowerCaseTransformer } from '../../../common/transformers';
 
+console.log('test');
+
 export class UserEmailDto {
   @ApiProperty({ example: 'user@gmail.com', description: 'Valid email' })
   @Transform(lowerCaseTransformer)
