@@ -97,6 +97,7 @@ module.exports = {
       },
     ],
     'max-len': ['error', { code: 100, ignoreUrls: true }],
+    'no-console': 'error',
     'unused-imports/no-unused-imports': 'error',
     'unused-imports/no-unused-vars': [
       'error',
